@@ -1,0 +1,146 @@
+2025-12-17 19:05:57,591 - __main__ - INFO - Logging to file: C:\Users\heito\Desktop\projects\ps\cloudwatch-challenge\results\run_20251217_190557\training.log
+2025-12-17 19:05:57,592 - __main__ - INFO - ================================================================================
+2025-12-17 19:05:57,593 - __main__ - INFO - CHARGEBACK PREDICTION - TRAINING PIPELINE
+2025-12-17 19:05:57,593 - __main__ - INFO - ================================================================================
+2025-12-17 19:05:57,594 - __main__ - INFO - Run directory: C:\Users\heito\Desktop\projects\ps\cloudwatch-challenge\results\run_20251217_190557
+2025-12-17 19:05:57,594 - __main__ - INFO - Timestamp: 20251217_190557
+2025-12-17 19:05:57,594 - __main__ - INFO - Data path: https://gist.githubusercontent.com/cloudwalk-tests/76993838e65d7e0f988f40f1b1909c97/raw/295d9f7cb8fdf08f3cb3bdf1696ab245d5b5c1c9/transactional-sample.csv
+2025-12-17 19:05:57,595 - __main__ - INFO - Test size: 0.2
+2025-12-17 19:05:57,595 - __main__ - INFO - False Positive cost: -1.0
+2025-12-17 19:05:57,595 - __main__ - INFO - False Negative cost: -5.0
+2025-12-17 19:05:57,595 - __main__ - INFO - Artifacts directory: artefacts
+2025-12-17 19:05:57,596 - __main__ - INFO - ================================================================================
+
+2025-12-17 19:05:57,596 - __main__ - INFO - STEP 1: Data Preprocessing
+2025-12-17 19:05:57,596 - __main__ - INFO - --------------------------------------------------------------------------------
+2025-12-17 19:05:57,596 - preprocess - INFO - Loading data from https://gist.githubusercontent.com/cloudwalk-tests/76993838e65d7e0f988f40f1b1909c97/raw/295d9f7cb8fdf08f3cb3bdf1696ab245d5b5c1c9/transactional-sample.csv
+2025-12-17 19:05:58,095 - preprocess - INFO - Data loaded successfully. Shape: (3199, 9)
+2025-12-17 19:05:58,114 - preprocess - INFO - Target distribution:
+has_cbk
+0    2808
+1     391
+Name: count, dtype: int64
+2025-12-17 19:05:58,116 - preprocess - INFO - Creating engineered features
+2025-12-17 19:05:58,164 - preprocess - INFO - Stored historical data with 3199 records
+2025-12-17 19:05:58,200 - preprocess - INFO - Features created. Missing values:
+transaction_amount                 0
+ts                                 0
+last_transaction_amount_diff    2704
+ts_diff                         2704
+single_tx_user                     0
+dtype: int64
+2025-12-17 19:05:58,300 - preprocess - INFO - Splitting data: train=80.0%, test=20.0%
+2025-12-17 19:05:58,360 - preprocess - INFO - Training set size: 2559
+2025-12-17 19:05:58,371 - preprocess - INFO - Test set size: 640
+2025-12-17 19:05:58,380 - preprocess - INFO - Training set target distribution:
+has_cbk
+0    2246
+1     313
+Name: count, dtype: int64
+2025-12-17 19:05:58,388 - preprocess - INFO - Test set target distribution:
+has_cbk
+0    562
+1     78
+Name: count, dtype: int64
+2025-12-17 19:05:58,398 - __main__ - INFO - Preprocessor saved to artefacts\preprocessor.pkl
+
+2025-12-17 19:05:58,400 - __main__ - INFO - STEP 2: Model Training
+2025-12-17 19:05:58,401 - __main__ - INFO - --------------------------------------------------------------------------------
+2025-12-17 19:05:58,404 - model - INFO - Model initialized with FP cost=-1.0, FN cost=-5.0
+2025-12-17 19:05:58,405 - model - INFO - ================================================================================
+2025-12-17 19:05:58,410 - model - INFO - Starting model training
+2025-12-17 19:05:58,431 - model - INFO - ================================================================================
+2025-12-17 19:05:58,468 - model - INFO - Class distribution - Negative: 2246, Positive: 313
+2025-12-17 19:05:58,497 - model - INFO - Scale pos weight: 7.18
+2025-12-17 19:05:58,497 - model - INFO - Training base XGBoost model...
+2025-12-17 19:05:58,879 - model - INFO - Base model training completed
+2025-12-17 19:05:58,879 - model - INFO - Tuning decision threshold using cross-validation...
+2025-12-17 19:06:01,816 - model - INFO - Optimal threshold found: 0.1313
+2025-12-17 19:06:01,817 - model - INFO - Best CV score: -113.05
+2025-12-17 19:06:01,817 - model - INFO - 
+================================================================================
+2025-12-17 19:06:01,817 - model - INFO - TRAINING SET EVALUATION
+2025-12-17 19:06:01,817 - model - INFO - ================================================================================
+2025-12-17 19:06:01,862 - model - INFO - 
+Training Set Metrics:
+2025-12-17 19:06:01,863 - model - INFO -   Precision: 0.6746
+2025-12-17 19:06:01,863 - model - INFO -   Recall: 1.0000
+2025-12-17 19:06:01,863 - model - INFO -   F1-Score: 0.8057
+2025-12-17 19:06:01,864 - model - INFO -   ROC-AUC: 1.0000
+2025-12-17 19:06:01,864 - model - INFO -   Credit Gain (Business Metric): -151.00
+2025-12-17 19:06:01,864 - model - INFO - 
+Confusion Matrix (Training):
+2025-12-17 19:06:01,864 - model - INFO -   TN: 2095, FP: 151
+2025-12-17 19:06:01,865 - model - INFO -   FN: 0, TP: 313
+2025-12-17 19:06:01,865 - model - INFO - 
+Classification Report (Training):
+2025-12-17 19:06:01,893 - model - INFO - 
+               precision    recall  f1-score   support
+
+No Chargeback       1.00      0.93      0.97      2246
+   Chargeback       0.67      1.00      0.81       313
+
+     accuracy                           0.94      2559
+    macro avg       0.84      0.97      0.89      2559
+ weighted avg       0.96      0.94      0.95      2559
+
+2025-12-17 19:06:01,894 - model - INFO - 
+================================================================================
+2025-12-17 19:06:01,894 - model - INFO - TEST SET EVALUATION
+2025-12-17 19:06:01,894 - model - INFO - ================================================================================
+2025-12-17 19:06:01,929 - model - INFO - 
+Test Set Metrics:
+2025-12-17 19:06:01,929 - model - INFO -   Precision: 0.4459
+2025-12-17 19:06:01,929 - model - INFO -   Recall: 0.8462
+2025-12-17 19:06:01,929 - model - INFO -   F1-Score: 0.5841
+2025-12-17 19:06:01,930 - model - INFO -   ROC-AUC: 0.9208
+2025-12-17 19:06:01,930 - model - INFO -   Credit Gain (Business Metric): -142.00
+2025-12-17 19:06:01,930 - model - INFO - 
+Confusion Matrix (Test):
+2025-12-17 19:06:01,931 - model - INFO -   TN: 480, FP: 82
+2025-12-17 19:06:01,931 - model - INFO -   FN: 12, TP: 66
+2025-12-17 19:06:01,931 - model - INFO - 
+Classification Report (Test):
+2025-12-17 19:06:01,949 - model - INFO - 
+               precision    recall  f1-score   support
+
+No Chargeback       0.98      0.85      0.91       562
+   Chargeback       0.45      0.85      0.58        78
+
+     accuracy                           0.85       640
+    macro avg       0.71      0.85      0.75       640
+ weighted avg       0.91      0.85      0.87       640
+
+2025-12-17 19:06:01,949 - model - INFO - 
+Saving model artifacts to artefacts
+2025-12-17 19:06:01,961 - model - INFO -   Saved tuned model: artefacts\tuned_model.pkl
+2025-12-17 19:06:01,966 - model - INFO -   Saved base model: artefacts\base_model.pkl
+2025-12-17 19:06:01,968 - model - INFO -   Saved configuration: artefacts\model_config.pkl
+2025-12-17 19:06:01,969 - model - INFO - All artifacts saved successfully
+2025-12-17 19:06:01,971 - __main__ - INFO - 
+STEP 3: Generating Predictions
+2025-12-17 19:06:01,972 - __main__ - INFO - --------------------------------------------------------------------------------
+2025-12-17 19:06:01,981 - preprocess - INFO - Loading data from https://gist.githubusercontent.com/cloudwalk-tests/76993838e65d7e0f988f40f1b1909c97/raw/295d9f7cb8fdf08f3cb3bdf1696ab245d5b5c1c9/transactional-sample.csv
+2025-12-17 19:06:02,104 - preprocess - INFO - Data loaded successfully. Shape: (3199, 9)
+2025-12-17 19:06:02,107 - preprocess - INFO - Target distribution:
+has_cbk
+0    2808
+1     391
+Name: count, dtype: int64
+2025-12-17 19:06:02,107 - preprocess - INFO - Creating engineered features
+2025-12-17 19:06:02,117 - preprocess - INFO - Features created. Missing values:
+transaction_amount                 0
+ts                                 0
+last_transaction_amount_diff    2704
+ts_diff                         2704
+single_tx_user                     0
+dtype: int64
+2025-12-17 19:06:02,130 - __main__ - INFO - Predictions saved to C:\Users\heito\Desktop\projects\ps\cloudwatch-challenge\results\run_20251217_190557\results_20251217_190557.csv
+2025-12-17 19:06:02,131 - __main__ - INFO - Total predictions: 640
+2025-12-17 19:06:02,132 - __main__ - INFO - Predicted chargebacks: 148
+2025-12-17 19:06:02,133 - __main__ - INFO - Average chargeback probability: 0.1698
+2025-12-17 19:06:02,133 - __main__ - INFO - 
+================================================================================
+2025-12-17 19:06:02,133 - __main__ - INFO - TRAINING PIPELINE COMPLETED SUCCESSFULLY
+2025-12-17 19:06:02,134 - __main__ - INFO - All outputs saved to: C:\Users\heito\Desktop\projects\ps\cloudwatch-challenge\results\run_20251217_190557
+2025-12-17 19:06:02,134 - __main__ - INFO - ================================================================================

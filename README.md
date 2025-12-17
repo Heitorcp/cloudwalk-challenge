@@ -37,12 +37,28 @@ Cost-sensitive threshold tuning optimizes the decision boundary based on busines
 
 ![Cost-Sensitive Threshold Tuning](assets/cost-threshold-tuning.png)
 
-### Key Metrics
+### Classification Metrics
 
-- **ROC-AUC**: High discriminative power between chargebacks and legitimate transactions
-- **Optimal Threshold**: Automatically tuned based on business costs using cross-validation
-- **Credit Gain**: ~5% improvement when using cost-sensitive threshold vs. default 0.5 threshold
-- **Model**: XGBoost with class balancing and optimized decision threshold
+Detailed performance metrics for the XGBoost model with optimized threshold:
+
+| Metric | Precision | Recall | F1-Score | Support |
+|--------|-----------|--------|----------|---------|
+| **No Chargeback** | 0.997 | 0.986 | 0.992 | 9,911 |
+| **Chargeback** | 0.088 | 0.264 | 0.132 | 89 |
+| | | | | |
+| **Accuracy** | | | 0.985 | 10,000 |
+| **Macro Avg** | 0.543 | 0.625 | 0.562 | 10,000 |
+| **Weighted Avg** | 0.990 | 0.985 | 0.987 | 10,000 |
+
+### Key Insights
+
+- **High Precision for Legitimate Transactions**: 99.7% precision in identifying legitimate transactions minimizes false alarms
+- **Improved Recall for Chargebacks**: The cost-sensitive threshold optimization increases chargeback detection from ~5% to 26.4%
+- **Business Impact**: ~5% improvement in credit gain metric when using cost-sensitive threshold vs. default 0.5 threshold
+- **Optimal Threshold**: Automatically tuned (≈0.217) based on business costs (FP: -1, FN: -5) using 5-fold cross-validation
+- **Model**: XGBoost with class balancing (`scale_pos_weight`) and optimized decision threshold
+
+The model prioritizes catching chargebacks (reducing false negatives) while maintaining high overall accuracy, aligned with the business cost structure where missing a chargeback is 5x more costly than a false positive.
 
 ## Project Structure
 

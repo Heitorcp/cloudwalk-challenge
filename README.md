@@ -52,13 +52,13 @@ Detailed performance metrics for the XGBoost model with optimized threshold:
 
 ### Key Insights
 
-- **High Precision for Legitimate Transactions**: 99.7% precision in identifying legitimate transactions minimizes false alarms
-- **Improved Recall for Chargebacks**: The cost-sensitive threshold optimization increases chargeback detection from ~5% to 26.4%
-- **Business Impact**: ~5% improvement in credit gain metric when using cost-sensitive threshold vs. default 0.5 threshold
-- **Optimal Threshold**: Automatically tuned (≈0.217) based on business costs (FP: -1, FN: -5) using 5-fold cross-validation
-- **Model**: XGBoost with class balancing (`scale_pos_weight`) and optimized decision threshold
+- **Balanced Performance**: 96.6% precision for legitimate transactions with 87.6% recall maintains low false alarm rate
+- **Strong Chargeback Detection**: 81.1% recall for chargebacks means catching 8 out of 10 fraudulent transactions
+- **Cost-Sensitive Optimization**: Threshold tuned to business costs (FP: -1, FN: -5) achieves ~5% improvement in credit gain
+- **Optimal Threshold**: Automatically found through 5-fold cross-validation on the business metric
+- **Model Architecture**: XGBoost with class balancing (`scale_pos_weight`) and optimized decision threshold
 
-The model prioritizes catching chargebacks (reducing false negatives) while maintaining high overall accuracy, aligned with the business cost structure where missing a chargeback is 5x more costly than a false positive.
+The model prioritizes catching chargebacks (81% recall) while maintaining reasonable precision (52%), aligned with the business cost structure where missing a chargeback is 5x more costly than a false positive.
 
 ## Project Structure
 

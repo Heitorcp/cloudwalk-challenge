@@ -13,6 +13,37 @@ This pipeline implements a complete solution for chargeback prediction with:
 - Flexible output formats (CSV/Excel)
 - Timestamped run tracking with logs
 
+## Results
+
+The model achieves strong performance with cost-sensitive threshold optimization:
+
+### Model Performance
+
+**Lift Curve - XGBoost Classifier**
+
+The lift curve shows how well the model identifies chargebacks compared to random selection. The model significantly outperforms random classification, especially for high-probability predictions.
+
+![Lift Curve XGBoost](assets/lift-curve-xgb.png)
+
+**Normalized Confusion Matrix**
+
+The confusion matrix demonstrates the model's classification performance on the test set:
+
+![Normalized Confusion Matrix](assets/normalized_cm_xgb.png)
+
+**Threshold Optimization**
+
+Cost-sensitive threshold tuning optimizes the decision boundary based on business costs (FP: -1, FN: -5). The optimization finds the threshold that maximizes the business metric (credit gain):
+
+![Cost-Sensitive Threshold Tuning](assets/cost-threshold-tuning.png)
+
+### Key Metrics
+
+- **ROC-AUC**: High discriminative power between chargebacks and legitimate transactions
+- **Optimal Threshold**: Automatically tuned based on business costs using cross-validation
+- **Credit Gain**: ~5% improvement when using cost-sensitive threshold vs. default 0.5 threshold
+- **Model**: XGBoost with class balancing and optimized decision threshold
+
 ## Project Structure
 
 ```

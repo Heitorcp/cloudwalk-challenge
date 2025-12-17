@@ -43,12 +43,12 @@ Detailed performance metrics for the XGBoost model with optimized threshold:
 
 | Metric | Precision | Recall | F1-Score | Support |
 |--------|-----------|--------|----------|---------|
-| **No Chargeback** | 0.997 | 0.986 | 0.992 | 9,911 |
-| **Chargeback** | 0.088 | 0.264 | 0.132 | 89 |
+| **No Chargeback** | 0.966 | 0.876 | 0.919 | 550 |
+| **Chargeback** | 0.518 | 0.811 | 0.632 | 90 |
 | | | | | |
-| **Accuracy** | | | 0.985 | 10,000 |
-| **Macro Avg** | 0.543 | 0.625 | 0.562 | 10,000 |
-| **Weighted Avg** | 0.990 | 0.985 | 0.987 | 10,000 |
+| **Accuracy** | | | 0.867 | 640 |
+| **Macro Avg** | 0.742 | 0.844 | 0.776 | 640 |
+| **Weighted Avg** | 0.903 | 0.867 | 0.879 | 640 |
 
 ### Key Insights
 

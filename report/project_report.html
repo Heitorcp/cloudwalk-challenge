@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chargeback Prediction Pipeline - Project Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+        }
+        h3 {
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code {
+            background-color: transparent;
+            color: #ecf0f1;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        ul {
+            line-height: 1.8;
+        }
+        .eda-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #3498db;
+        }
+        .eda-image {
+            margin: 30px 0;
+            text-align: center;
+        }
+        .eda-image img {
+            max-width: 90%;
+        }
+        .eda-description {
+            background-color: #e8f4f8;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chargeback Prediction Pipeline</h1>
+        <p><strong>Production-ready ML pipeline for predicting transaction chargebacks using XGBoost with cost-sensitive threshold optimization.</strong></p>
+
+        <h2>Overview</h2>
+        <p>This pipeline implements a complete solution for chargeback prediction with:</p>
+        <ul>
+            <li>Feature engineering avoiding data leakage</li>
+            <li>Cost-sensitive learning (configurable FP/FN costs)</li>
+            <li>Threshold optimization using cross-validation</li>
+            <li>Comprehensive logging and metrics</li>
+            <li>Model artifact management</li>
+            <li>Flexible output formats (CSV/Excel)</li>
+            <li>Timestamped run tracking with logs</li>
+        </ul>
+
+        <h2>Results</h2>
+        <p>The model achieves strong performance with cost-sensitive threshold optimization:</p>
+
+        <h3>Model Performance</h3>
+        <p><strong>Lift Curve - XGBoost Classifier</strong></p>
+        <p>The lift curve shows how well the model identifies chargebacks compared to random selection. The model significantly outperforms random classification, especially for high-probability predictions.</p>
+
+        <p><strong>Normalized Confusion Matrix</strong></p>
+        <p>The confusion matrix demonstrates the model's classification performance on the test set.</p>
+
+        <p><strong>Threshold Optimization</strong></p>
+        <p>Cost-sensitive threshold tuning optimizes the decision boundary based on business costs (FP: -1, FN: -5). The optimization finds the threshold that maximizes the business metric (credit gain).</p>
+
+        <h3>Classification Metrics</h3>
+        <p>Detailed performance metrics for the XGBoost model with optimized threshold:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-Score</th>
+                    <th>Support</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>No Chargeback</strong></td>
+                    <td>0.966</td>
+                    <td>0.876</td>
+                    <td>0.919</td>
+                    <td>550</td>
+                </tr>
+                <tr>
+                    <td><strong>Chargeback</strong></td>
+                    <td>0.518</td>
+                    <td>0.811</td>
+                    <td>0.632</td>
+                    <td>90</td>
+                </tr>
+                <tr>
+                    <td><strong>Accuracy</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td>0.867</td>
+                    <td>640</td>
+                </tr>
+                <tr>
+                    <td><strong>Macro Avg</strong></td>
+                    <td>0.742</td>
+                    <td>0.844</td>
+                    <td>0.776</td>
+                    <td>640</td>
+                </tr>
+                <tr>
+                    <td><strong>Weighted Avg</strong></td>
+                    <td>0.903</td>
+                    <td>0.867</td>
+                    <td>0.879</td>
+                    <td>640</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Key Insights</h3>
+        <ul>
+            <li><strong>Balanced Performance:</strong> 96.6% precision for legitimate transactions with 87.6% recall maintains low false alarm rate</li>
+            <li><strong>Strong Chargeback Detection:</strong> 81.1% recall for chargebacks means catching 8 out of 10 fraudulent transactions</li>
+            <li><strong>Cost-Sensitive Optimization:</strong> Threshold tuned to business costs (FP: -1, FN: -5) achieves ~5% improvement in credit gain</li>
+            <li><strong>Optimal Threshold:</strong> Automatically found through 5-fold cross-validation on the business metric</li>
+            <li><strong>Model Architecture:</strong> XGBoost with class balancing (<code>scale_pos_weight</code>) and optimized decision threshold</li>
+        </ul>
+
+        <div class="highlight">
+            <p>The model prioritizes catching chargebacks (81% recall) while maintaining reasonable precision (52%), aligned with the business cost structure where missing a chargeback is 5x more costly than a false positive.</p>
+        </div>
+
+        <h3>Model Performance Visualizations</h3>
+        
+        <div class="eda-image">
+            <img src="assets/lift-curve-xgb.png" alt="Lift Curve - XGBoost Classifier">
+            <p><em>Figure: Lift Curve showing model performance compared to random selection. The model significantly outperforms random classification across all percentiles.</em></p>
+        </div>
+
+        <div class="eda-image">
+            <img src="assets/normalized_cm_xgb.png" alt="Normalized Confusion Matrix - XGBoost">
+            <p><em>Figure: Normalized Confusion Matrix demonstrating the classification performance on the test set. Shows the proportion of correct and incorrect predictions for each class.</em></p>
+        </div>
+
+        <div class="eda-image">
+            <img src="assets/cost-threshold-tuning.png" alt="Cost-Sensitive Threshold Tuning">
+            <p><em>Figure: Threshold optimization curve showing how credit gain varies with different decision thresholds. The optimal threshold maximizes the business metric based on the specified costs.</em></p>
+        </div>
+
+        <h2>Features Created</h2>
+        <p>The pipeline creates the following engineered features:</p>
+        <ol>
+            <li><strong>last_transaction_amount_diff:</strong> Difference from user's previous transaction amount</li>
+            <li><strong>ts_diff:</strong> Time difference from user's previous transaction</li>
+            <li><strong>single_tx_user:</strong> Binary flag if user has more than one transaction (1) or not (0)</li>
+        </ol>
+        <p>These features are created in a way that avoids data leakage by using only historical information available at prediction time.</p>
+
+        <h2>Cost-Sensitive Learning</h2>
+        <p>The model uses a business-focused cost matrix:</p>
+        <pre><code>                Predicted
+                No CBK  CBK
+Actual  No CBK    0     -1  (False Positive cost)
+        CBK      -5      0  (False Negative cost)</code></pre>
+        <p>Default values:</p>
+        <ul>
+            <li>False Positive (approve fraudulent transaction): -1</li>
+            <li>False Negative (reject legitimate transaction): -5</li>
+        </ul>
+        <div class="eda-description">
+            <p><strong>Note:</strong> The current configuration assumes that the cost of a False Negative (missing a chargeback) is 5 times higher than the cost of a False Positive (flagging a legitimate transaction). However, <strong>these cost ratios should be adjusted according to the specific business context and risk tolerance</strong>. Different industries and business models may have varying cost structures, and the optimal threshold will change accordingly. The pipeline allows easy customization of these values through command-line arguments.</p>
+        </div>
+
+        <!-- EDA Section -->
+        <div class="eda-section">
+            <h1>Exploratory Data Analysis</h1>
+            
+            <h2>1. Dataset Overview</h2>
+            <div class="eda-description">
+                <p>The transactional dataset was analyzed to understand patterns and characteristics relevant to chargeback prediction. The data includes transaction amounts, timestamps, user IDs, and merchant information.</p>
+            </div>
+
+            <h2>2. Chargeback Distribution</h2>
+            <div class="eda-description">
+                <p><strong>Key Finding:</strong> The dataset exhibits a highly imbalanced class distribution, a common characteristic in fraud detection scenarios. The majority of transactions are legitimate (no chargeback), with chargebacks representing a small minority of cases. This imbalance necessitates special handling during model training, such as class weighting and cost-sensitive learning.</p>
+            </div>
+
+            <h2>3. Amount and Time Distributions</h2>
+            <div class="eda-image">
+                <img src="assets/eda-0.png" alt="Transaction Amount and Time Distributions">
+                <p><em>Figure 1: Distribution analysis of transaction amounts and timestamps (both original and log-transformed scales)</em></p>
+            </div>
+            <div class="eda-description">
+                <p>The analysis examined both transaction amounts and timestamps to identify patterns associated with chargebacks:</p>
+                <ul>
+                    <li><strong>Transaction Amount:</strong> Both raw and log-transformed transaction amounts show overlapping distributions between chargeback and non-chargeback transactions, suggesting that amount alone is not a strong discriminator.</li>
+                    <li><strong>Transaction Time:</strong> Unix timestamp distributions (in seconds) were analyzed to identify temporal patterns. Log-scale transformation helps reveal patterns in time-based features.</li>
+                    <li><strong>Distribution Overlap:</strong> The significant overlap in distributions between the two classes indicates that simple threshold-based rules would not be effective, justifying the need for machine learning approaches.</li>
+                </ul>
+            </div>
+
+            <h2>4. Engineered Features Analysis</h2>
+            <div class="eda-image">
+                <img src="assets/eda-1.png" alt="Engineered Features Analysis">
+                <p><em>Figure 2: Distribution of engineered features - time since last transaction and amount difference from last transaction</em></p>
+            </div>
+            <div class="eda-description">
+                <p>Additional features were engineered to capture user behavior patterns:</p>
+                <ul>
+                    <li><strong>Time Since Last Transaction (ts_diff):</strong> Measures the temporal gap between consecutive transactions for each user. Both linear and log-scale views show some potential separation between chargeback and non-chargeback cases, though with considerable overlap.</li>
+                    <li><strong>Last Transaction Amount Difference:</strong> Captures how much the current transaction amount differs from the user's previous transaction. This feature aims to detect unusual spending patterns that might indicate fraudulent activity.</li>
+                    <li><strong>Feature Discrimination:</strong> While these engineered features show some differences between classes, no single feature provides clear separation, reinforcing the need for ensemble learning methods like XGBoost that can capture complex, non-linear relationships.</li>
+                </ul>
+            </div>
+
+            <h2>5. User Behavior Insights</h2>
+            <div class="eda-description">
+                <h3>Single Transaction Users</h3>
+                <p>A significant portion of users (approximately 50%) have only a single transaction in the dataset. This presents a challenge for features that rely on historical user behavior, as no previous transaction data is available for these users.</p>
+
+                <h3>Multiple Transaction Users</h3>
+                <p>The remaining users have multiple transactions, allowing for richer feature engineering based on transaction history. For these users, features like time differences and amount changes between transactions become meaningful predictors.</p>
+
+                <h3>Feature Engineering Strategy</h3>
+                <p>The analysis revealed the importance of handling single-transaction users appropriately:</p>
+                <ul>
+                    <li>A <code>single_tx_user</code> binary flag was created to explicitly capture this distinction</li>
+                    <li>Time and amount difference features naturally contain null values for first-time users, which the model can learn to handle</li>
+                    <li>The number of distinct merchants per user provides additional behavioral context</li>
+                </ul>
+            </div>
+
+            <h2>6. EDA Conclusions</h2>
+            <div class="highlight">
+                <h3>Key Takeaways:</h3>
+                <ul>
+                    <li><strong>No Single Discriminating Feature:</strong> Individual features show significant overlap between chargeback and non-chargeback transactions, requiring a sophisticated machine learning approach.</li>
+                    <li><strong>Importance of Feature Engineering:</strong> Behavioral features derived from user transaction history provide incremental predictive value.</li>
+                    <li><strong>Class Imbalance:</strong> The severe class imbalance necessitates cost-sensitive learning and careful threshold optimization.</li>
+                    <li><strong>User Segmentation:</strong> The distinction between single-transaction and multi-transaction users is important for feature engineering.</li>
+                    <li><strong>Model Choice:</strong> The complex, non-linear relationships and lack of clear linear separation justify the use of gradient boosting (XGBoost) with threshold optimization.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Project Structure</h2>
+        <pre><code>cloudwatch-challenge/
+├── src/
+│   ├── preprocess.py      # Data preprocessing and feature engineering
+│   ├── model.py           # XGBoost model with threshold tuning
+│   └── main.py            # Pipeline orchestrator
+├── artefacts/             # Saved model artifacts (created after training)
+│   ├── tuned_model.pkl
+│   ├── base_model.pkl
+│   ├── preprocessor.pkl
+│   └── model_config.pkl
+├── results/               # Training run outputs (timestamped)
+│   └── run_YYYYMMDD_HHMMSS/
+│       ├── results_YYYYMMDD_HHMMSS.csv
+│       └── training.log
+├── notebooks/             # Exploratory analysis
+└── README.md              # Project documentation</code></pre>
+
+        <h2>Installation</h2>
+        <p>This project uses <code>uv</code> for fast Python package management.</p>
+        <pre><code># Install uv if you haven't already
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install project dependencies
+uv pip install pandas numpy scikit-learn xgboost openpyxl</code></pre>
+
+        <h2>Usage</h2>
+        <h3>Training the Model</h3>
+        <p>Basic training with default parameters:</p>
+        <pre><code>cd src
+python main.py train --data path/to/training_data.csv</code></pre>
+
+        <p>Training with custom costs:</p>
+        <pre><code>python main.py train --data data.csv --fp-cost -2 --fn-cost -10</code></pre>
+
+        <h3>Making Predictions on New Data</h3>
+        <pre><code>python main.py predict --data new_transactions.csv --output predictions.csv</code></pre>
+
+        <h2>Metrics Reported</h2>
+        <p>Training and test metrics include:</p>
+        <ul>
+            <li>Precision, Recall, F1-Score</li>
+            <li>ROC-AUC</li>
+            <li>Confusion Matrix (TN, FP, FN, TP)</li>
+            <li>Credit Gain (business metric)</li>
+            <li>Classification Report</li>
+        </ul>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #ddd; color: #7f8c8d; text-align: center;">
+            <p>Generated on December 18, 2025 | Chargeback Prediction Pipeline Project</p>
+        </footer>
+    </div>
+</body>
+</html>
